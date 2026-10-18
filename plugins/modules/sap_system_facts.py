@@ -63,13 +63,15 @@ ansible_facts:
             "InstanceType": "NW",
             "NR": "00",
             "SID": "ABC",
-            "TYPE": "ASCS"
+            "TYPE": "ASCS",
+            "START_PRIORITY: "1"
         },
         {
             "InstanceType": "NW",
             "NR": "01",
             "SID": "ABC",
-            "TYPE": "PAS"
+            "TYPE": "PAS",
+            "START_PRIORITY": "0.5"
         },
         {
             "InstanceType": "HANA",
@@ -202,6 +204,7 @@ def get_nw_nr(sids, module):
 
     sapcontrol_path = module.get_bin_path('/usr/sap/hostctrl/exe/sapcontrol', required=True)
     type = ""
+    start_priority = ""
 
     for sid in sids:
         path = os.path.join('/usr/sap', sid)
@@ -228,7 +231,7 @@ def get_nw_nr(sids, module):
                             type_raw = (line.strip('][').split(', '))[-1]
                             # split instance number
                             type = type_raw[:-2]
-                            nw_list.append({'NR': instance_nr, 'SID': sid, 'TYPE': get_instance_type(type), 'START_PRIORITY': start_priority, 'InstanceType': 'NW'})
+                        nw_list.append({'NR': instance_nr, 'SID': sid, 'TYPE': get_instance_type(type), 'START_PRIORITY': start_priority, 'InstanceType': 'NW'})
 
     return nw_list
 
