@@ -81,14 +81,14 @@ class Testsap_system_facts(ModuleTestCase):
                 with patch.object(self.module, 'get_all_nw_sid') as get_all_nw_sid:
                     get_all_nw_sid.return_value = ['ABC']
                     with patch.object(self.module, 'get_nw_nr') as get_nw_nr:
-                        get_nw_nr.return_value = [{"InstanceType": "NW", "NR": "00", "SID": "ABC", "TYPE": "ASCS"},
-                                                  {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS"}]
+                        get_nw_nr.return_value = [{"InstanceType": "NW", "NR": "00", "SID": "ABC", "TYPE": "ASCS", "START_PRIORITY": "3"},
+                                                  {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS", "START_PRIORITY": "1"}]
                         with self.assertRaises(AnsibleExitJson) as result:
                             with set_module_args({}):
                                 self.module.main()
         self.assertEqual(result.exception.args[0]['ansible_facts'], {'sap': [{"InstanceType": "HANA", "NR": "01", "SID": "HDB", "TYPE": "HDB"},
-                                                                             {"InstanceType": "NW", "NR": "00", "SID": "ABC", "TYPE": "ASCS"},
-                                                                             {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS"}]})
+                                                                             {"InstanceType": "NW", "NR": "00", "SID": "ABC", "TYPE": "ASCS", "START_PRIORITY": "1"},
+                                                                             {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS", "START_PRIORITY": "3"}]})
 
     def test_sap_system_facts_command_hana(self):
         """Check that result for HANA is correct."""
@@ -114,7 +114,7 @@ class Testsap_system_facts(ModuleTestCase):
                     with self.assertRaises(AnsibleExitJson) as result:
                         with set_module_args({}):
                             self.module.main()
-        self.assertEqual(result.exception.args[0]['ansible_facts'], {'sap': [{'InstanceType': 'NW', 'NR': '00', 'SID': 'ABC', 'TYPE': 'PAS'}]})
+        self.assertEqual(result.exception.args[0]['ansible_facts'], {'sap': [{'InstanceType': 'NW', 'NR': '00', 'SID': 'ABC', 'TYPE': 'PAS', "START_PRIORITY": "3"}]})
 
     def test_sap_system_facts_future_nw(self):
         """Check that future apps for NW are correct handled."""
@@ -140,4 +140,4 @@ class Testsap_system_facts(ModuleTestCase):
                     with self.assertRaises(AnsibleExitJson) as result:
                         with set_module_args({}):
                             self.module.main()
-        self.assertEqual(result.exception.args[0]['ansible_facts'], {'sap': [{'InstanceType': 'NW', 'NR': '80', 'SID': 'ABC', 'TYPE': 'WebDisp'}]})
+        self.assertEqual(result.exception.args[0]['ansible_facts'], {'sap': [{'InstanceType': 'NW', 'NR': '80', 'SID': 'ABC', 'TYPE': 'WebDisp', "START_PRIORITY": "5"}]})
