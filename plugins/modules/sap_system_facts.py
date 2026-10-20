@@ -64,7 +64,7 @@ ansible_facts:
             "NR": "00",
             "SID": "ABC",
             "TYPE": "ASCS",
-            "START_PRIORITY: "1"
+            "START_PRIORITY": "1"
         },
         {
             "InstanceType": "NW",
