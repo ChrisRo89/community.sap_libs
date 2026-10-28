@@ -150,6 +150,23 @@ class Testsap_system_facts(ModuleTestCase):
             with patch.object(self.module.os, 'listdir') as mock_listdir:
                 mock_listdir.return_value = ['D00']
                 with patch.object(basic.AnsibleModule, 'run_command') as run_command:
+                    run_command.side_effect = [
+                        {0, 'SAP\nINSTANCE_NAME, Attribute, D00\nSAP', ''},
+                        {1, 'SAP\nStartPriority, Attribute, 1', ''}
+                    ]
+                    with self.assertRaises(AnsibleExitJson) as result:
+                        with set_module_args({}):
+                            self.module.main()
+        self.assertEqual(result.exception.args[0]['ansible_facts'],
+                         {'sap': [{'InstanceType': 'NW', 'NR': '00', 'SID': 'ABC', 'TYPE': 'PAS', 'START_PRIORITY': '1'}]})
+
+    def test_sap_system_facts_pas_nw_with_priority(self):
+        """Check that result for NW is correct."""
+        with patch.object(self.module, 'get_all_nw_sid') as mock_all_nw_sid:
+            mock_all_nw_sid.return_value = ['ABC']
+            with patch.object(self.module.os, 'listdir') as mock_listdir:
+                mock_listdir.return_value = ['D00']
+                with patch.object(basic.AnsibleModule, 'run_command') as run_command:
                     run_command.return_value = [0, 'SAP\nINSTANCE_NAME, Attribute, D00\nSAP', '']
                     with self.assertRaises(AnsibleExitJson) as result:
                         with set_module_args({}):
@@ -171,6 +188,23 @@ class Testsap_system_facts(ModuleTestCase):
         self.assertEqual(result.exception.args[0]['ansible_facts'],
                          {'sap': [{'InstanceType': 'NW', 'NR': '00', 'SID': 'ABC', 'TYPE': 'XXX', 'START_PRIORITY': None}]})
 
+    def test_sap_system_facts_future_nw_with_priority(self):
+        """Check that future apps for NW are correct handled."""
+        with patch.object(self.module, 'get_all_nw_sid') as mock_all_nw_sid:
+            mock_all_nw_sid.return_value = ['ABC']
+            with patch.object(self.module.os, 'listdir') as mock_listdir:
+                mock_listdir.return_value = ['XY00']
+                with patch.object(basic.AnsibleModule, 'run_command') as run_command:
+                    run_command.side_effect = [
+                        {0, 'SAP\nINSTANCE_NAME, Attribute, XY00\nSAP', ''},
+                        {1, 'SAP\nStartPriority, Attribute, 8\nSAP', ''}
+                    ]
+                    with self.assertRaises(AnsibleExitJson) as result:
+                        with set_module_args({}):
+                            self.module.main()
+        self.assertEqual(result.exception.args[0]['ansible_facts'],
+                         {'sap': [{'InstanceType': 'NW', 'NR': '00', 'SID': 'ABC', 'TYPE': 'XXX', 'START_PRIORITY': '8'}]})
+
     def test_sap_system_facts_wd_nw(self):
         """Check that WD for NW is correct handled."""
         with patch.object(self.module, 'get_all_nw_sid') as mock_all_nw_sid:
@@ -184,3 +218,20 @@ class Testsap_system_facts(ModuleTestCase):
                             self.module.main()
         self.assertEqual(result.exception.args[0]['ansible_facts'],
                          {'sap': [{'InstanceType': 'NW', 'NR': '80', 'SID': 'ABC', 'TYPE': 'WebDisp', 'START_PRIORITY': None }]})
+
+   def test_sap_system_facts_wd_nw(self):
+        """Check that WD for NW is correct handled."""
+        with patch.object(self.module, 'get_all_nw_sid') as mock_all_nw_sid:
+            mock_all_nw_sid.return_value = ['ABC']
+            with patch.object(self.module.os, 'listdir') as mock_listdir:
+                mock_listdir.return_value = ['WD80']
+                with patch.object(basic.AnsibleModule, 'run_command') as run_command:
+                    run_command.side_effect = [
+                        {0, 'SAP\nINSTANCE_NAME, Attribute, WD80\nSAP', ''},
+                        {1, 'SAP\nStartPriority, Attribute, 5\nSAP', ''}
+                    ]
+                    with self.assertRaises(AnsibleExitJson) as result:
+                        with set_module_args({}):
+                            self.module.main()
+        self.assertEqual(result.exception.args[0]['ansible_facts'],
+                         {'sap': [{'InstanceType': 'NW', 'NR': '80', 'SID': 'ABC', 'TYPE': 'WebDisp', 'START_PRIORITY': '5' }]})
