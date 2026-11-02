@@ -219,7 +219,7 @@ class Testsap_system_facts(ModuleTestCase):
         self.assertEqual(result.exception.args[0]['ansible_facts'],
                          {'sap': [{'InstanceType': 'NW', 'NR': '80', 'SID': 'ABC', 'TYPE': 'WebDisp', 'START_PRIORITY': None }]})
 
-   def test_sap_system_facts_wd_nw_with_priority(self):
+    def test_sap_system_facts_wd_nw_with_priority(self):
         """Check that WD for NW is correct handled."""
         with patch.object(self.module, 'get_all_nw_sid') as mock_all_nw_sid:
             mock_all_nw_sid.return_value = ['ABC']
