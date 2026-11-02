@@ -91,8 +91,7 @@ class Testsap_system_facts(ModuleTestCase):
         self.assertEqual(result.exception.args[0]['ansible_facts'],
                          {'sap': [{"InstanceType": "HANA", "NR": "01", "SID": "HDB", "TYPE": "HDB"},
                                   {"InstanceType": "NW", "NR": "00", "SID": "ABC", "TYPE": "ASCS", "START_PRIORITY": None},
-                                  {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS", "START_PRIORITY": None}
-                                 ]})
+                                  {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS", "START_PRIORITY": None}]})
 
     def test_sap_system_facts_all_with_priority(self):
         """Check that result is changed when all is one system."""
@@ -113,8 +112,7 @@ class Testsap_system_facts(ModuleTestCase):
         self.assertEqual(result.exception.args[0]['ansible_facts'],
                          {'sap': [{"InstanceType": "HANA", "NR": "01", "SID": "HDB", "TYPE": "HDB"},
                                   {"InstanceType": "NW", "NR": "00", "SID": "ABC", "TYPE": "ASCS", "START_PRIORITY": '3'},
-                                  {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS", "START_PRIORITY": '1'}
-                                 ]})
+                                  {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS", "START_PRIORITY": '1'}]})
 
     def test_sap_system_facts_command_hana(self):
         """Check that result for HANA is correct."""
@@ -217,7 +215,7 @@ class Testsap_system_facts(ModuleTestCase):
                         with set_module_args({}):
                             self.module.main()
         self.assertEqual(result.exception.args[0]['ansible_facts'],
-                         {'sap': [{'InstanceType': 'NW', 'NR': '80', 'SID': 'ABC', 'TYPE': 'WebDisp', 'START_PRIORITY': None }]})
+                         {'sap': [{'InstanceType': 'NW', 'NR': '80', 'SID': 'ABC', 'TYPE': 'WebDisp', 'START_PRIORITY': None}]})
 
     def test_sap_system_facts_wd_nw_with_priority(self):
         """Check that WD for NW is correct handled."""
@@ -234,4 +232,4 @@ class Testsap_system_facts(ModuleTestCase):
                         with set_module_args({}):
                             self.module.main()
         self.assertEqual(result.exception.args[0]['ansible_facts'],
-                         {'sap': [{'InstanceType': 'NW', 'NR': '80', 'SID': 'ABC', 'TYPE': 'WebDisp', 'START_PRIORITY': '5' }]})
+                         {'sap': [{'InstanceType': 'NW', 'NR': '80', 'SID': 'ABC', 'TYPE': 'WebDisp', 'START_PRIORITY': '5'}]})
