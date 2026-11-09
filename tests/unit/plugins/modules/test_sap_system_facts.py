@@ -91,8 +91,7 @@ class Testsap_system_facts(ModuleTestCase):
         self.assertEqual(result.exception.args[0]['ansible_facts'],
                          {'sap': [{"InstanceType": "HANA", "NR": "01", "SID": "HDB", "TYPE": "HDB"},
                                   {"InstanceType": "NW", "NR": "00", "SID": "ABC", "TYPE": "ASCS", "START_PRIORITY": None},
-                                  {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS", "START_PRIORITY": None}
-                                 ]
+                                  {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS", "START_PRIORITY": None}]
                          }
                         )
 
