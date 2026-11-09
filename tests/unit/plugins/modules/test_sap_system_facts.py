@@ -82,8 +82,8 @@ class Testsap_system_facts(ModuleTestCase):
                     get_all_nw_sid.return_value = ['ABC']
                     with patch.object(self.module, 'get_nw_nr') as get_nw_nr:
                         get_nw_nr.return_value = [
-                            {"InstanceType": "NW", "NR": "00", "SID": "ABC", "TYPE": "ASCS"},
-                            {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS"}
+                            {"InstanceType": "NW", "NR": "00", "SID": "ABC", "TYPE": "ASCS", "START_PRIORITY": None},
+                            {"InstanceType": "NW", "NR": "01", "SID": "ABC", "TYPE": "PAS", "START_PRIORITY": None}
                         ]
                         with self.assertRaises(AnsibleExitJson) as result:
                             with set_module_args({}):
